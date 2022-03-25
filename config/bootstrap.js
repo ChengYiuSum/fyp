@@ -39,6 +39,46 @@ module.exports.bootstrap = async function () {
     // etc.
   ]);
 
+  await Product.createEach([
+    {
+      title: "test", price: "20", imgUrl: "test", shop: "citySuper", type: "carbonated-drinks", date: "11-3-2022"
+    },
+    {
+      title: "test", price: "21", imgUrl: "test", shop: "citySuper", type: "carbonated-drinks", date: "12-3-2022"
+    },
+    {
+      title: "test", price: "21", imgUrl: "test", shop: "citySuper", type: "carbonated-drinks", date: "13-3-2022"
+    },
+    {
+      title: "test", price: "21", imgUrl: "test", shop: "citySuper", type: "carbonated-drinks", date: "14-3-2022"
+    },
+    {
+      title: "test", price: "21", imgUrl: "test", shop: "citySuper", type: "carbonated-drinks", date: "15-3-2022"
+    },
+    {
+      title: "test", price: "21", imgUrl: "test", shop: "citySuper", type: "carbonated-drinks", date: "16-3-2022"
+    },
+    {
+      title: "test", price: "21", imgUrl: "test", shop: "citySuper", type: "carbonated-drinks", date: "17-3-2022"
+    },
+    {
+      title: "test", price: "19", imgUrl: "test", shop: "citySuper", type: "carbonated-drinks", date: "18-3-2022"
+    },
+    {
+      title: "test", price: "19", imgUrl: "test", shop: "citySuper", type: "carbonated-drinks", date: "19-3-2022"
+    },
+    {
+      title: "test", price: "19", imgUrl: "test", shop: "citySuper", type: "carbonated-drinks", date: "20-3-2022"
+    },
+    {
+      title: "test", price: "10", imgUrl: "test", shop: "citySuper", type: "carbonated-drinks", date: "21-3-2022"
+    },
+    {
+      title: "test", price: "10", imgUrl: "test", shop: "citySuper", type: "carbonated-drinks", date: "22-3-2022"
+    },
+  ]);
+
+
   return generateUsers();
 
   async function generateUsers() {

@@ -86,6 +86,17 @@ module.exports.routes = {
   'GET /admin/setting': 'AdminController.setting',
   'POST /admin/setting': 'AdminController.setting',
 
+  'GET /user/preference': 'UserController.preference',
+  'POST /user/preference': 'UserController.editPreference',
+  'POST /user/preference/remove/:fk': 'UserController.removePreference',
+
+  'GET /preference/json': 'PreferenceController.preference',
+
+  'GET /product/json': 'ProductController.json',
+  'GET /product/chart': 'ProductController.chart',
+
+
+
   // 'GET /user/test': 'UserController.test',
   'GET /loaderio-de4c69f9f00e62494ea5278001babfec/': 'AdminController.loadTest'
 

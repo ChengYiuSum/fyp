@@ -1,5 +1,5 @@
 /**
- * Record.js
+ * Product.js
  *
  * @description :: A model definition represents a database table/collection.
  * @docs        :: https://sailsjs.com/docs/concepts/models-and-orm/models
@@ -14,27 +14,29 @@ module.exports = {
     //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝
 
     title: {
-      type: "json",
-      columnType: 'array'
+      type: "string",
+      // unique: true,
+      // required: true
     },
 
     price: {
-      type: "json",
-      columnType: 'array'
+      type: "string"
     },
 
-    quantity: {
-      type: "json",
-      columnType: 'array'
+    imgUrl: {
+      type: "string"
     },
 
     shop: {
-      type: "json",
-      columnType: 'array'
+      type: "string"
     },
 
-    total: {
-      type: "number"
+    type: {
+      type: "string"
+    },
+
+    date: {
+      type: "string"
     },
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
@@ -45,10 +47,6 @@ module.exports = {
     //  ╔═╗╔═╗╔═╗╔═╗╔═╗╦╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
-
-    create: {
-      model: 'user'
-    },
 
   },
 

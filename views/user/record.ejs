@@ -85,8 +85,7 @@
         </table>
     </div>
     <input name="total" value="<%= total %>" readonly hidden>
-    <input class="input" type="hidden" name="make" value="<%= req.session.userid %>">
-    <input type="hidden" name="method" value="creditCard">
+    <input class="input" type="hidden" name="create" value="<%= req.session.userid %>">
     <div class="field">
         <div class="control">
             <button class="button is-link is-pulled-right" type="submit" onclick="submit()">Confirm payment</button>

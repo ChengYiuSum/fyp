@@ -5,29 +5,47 @@
 <body>
     <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
 
-    <script>
-        var xValues = [50, 60, 70, 80, 90, 100, 110, 120, 130, 140, 150];
-        var yValues = [7, 8, 8, 9, 9, 9, 10, 11, 14, 14, 15];
+    date: <%= date %>
+        price: <%= price %>
 
-        new Chart("myChart", {
-            type: "line",
-            data: {
-                labels: xValues,
-                datasets: [{
-                    fill: false,
-                    lineTension: 0,
-                    backgroundColor: "rgba(0,0,255,1.0)",
-                    borderColor: "rgba(0,0,255,0.1)",
-                    data: yValues
-                }]
-            },
-            options: {
-                legend: { display: false },
-                scales: {
-                    yAxes: [{ ticks: { min: 6, max: 16 } }],
+            <button class="is-link" onClick="showchart('<%= date %>', '<%= price %>')">Edit
+            </button>
+
+            <script>
+                async function showchart(date, price) {
+
+                    var xValues = date
+                    var yValues = price
+
+                    alert(typeof(xValues))
+                    alert(typeof(yValues))
+
+                    var xValuess = ['11-3-2022', '12-3-2022', '13-3-2022', '14-3-2022', '15-3-2022', '16-3-2022', '17-3-2022', '18-3-2022', '19-3-2022', '20-3-2022', '21-3-2022', '22-3-2022'];
+                    var yValuess = [20, 21, 21, 21, 21, 21, 21, 19, 19, 19, 10, 10];
+
+                    alert(typeof(xValuess))
+                    alert(typeof(yValuess))
+
+                    new Chart("myChart", {
+                        type: "line",
+                        data: {
+                            labels: xValues,
+                            datasets: [{
+                                fill: false,
+                                lineTension: 0,
+                                backgroundColor: "rgba(0,0,255,1.0)",
+                                borderColor: "rgba(0,0,255,0.1)",
+                                data: yValues
+                            }]
+                        },
+                        options: {
+                            legend: { display: false },
+                            scales: {
+                                yAxes: [{ ticks: { min: 10, max: 50 } }],
+                            }
+                        }
+                    });
                 }
-            }
-        });
-    </script>
+            </script>
 
 </body>

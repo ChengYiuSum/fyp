@@ -48,8 +48,8 @@
 </body>
 
 <script>
-  function startTime(time) {
-    setInterval(function () {
+  async function startTime(time) {
+    setInterval(async function () {
       const today = new Date();
 
       let d = today.getDay();
@@ -58,7 +58,16 @@
       let m = today.getMinutes();
       let s = today.getSeconds();
 
-      // alert(time)
+      if (m % time == 0 && s == 0) {
+        alert("success")
+        var preferences = await fetch("/admin/preference/matching", {
+          method: "GET"
+        });
+
+        alert("automatching")
+      } else {
+        // alert("not work " + settime)
+      }
 
       // document.getElementById('txt').innerHTML = today;
 

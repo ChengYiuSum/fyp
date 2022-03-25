@@ -223,17 +223,20 @@ module.exports = {
             return res.view('user/purchase', { products: user.products, user: user });
         }
 
-        var record = await Record.create(req.body).fetch();
+        var purchase = await Purchase.create(req.body).fetch();
+
+        // console.log("^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^")
+        // console.log(purchase)
 
         return res.redirect('/user/record');
     },
 
     record: async function (req, res) {
-        var record = await User.findOne(req.session.userid).populate("records");
+        var purchase = await User.findOne(req.session.userid).populate("purchases");
 
         // record = record.records[record.length - 1]
 
-        // console.log(record)
+        // console.log(purchase)
         // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~")
         // console.log(record.records[record.records.length - 1])
 
@@ -244,30 +247,25 @@ module.exports = {
             var total = 0.0
             var price = 0.0
 
-            if (typeof record.records[record.records.length - 1].price === 'string') {
-                price = record.records[record.records.length - 1].price.substring(1);
-                total = parseFloat(price) * parseInt(record.records[record.records.length - 1].quantity)
+            if (typeof purchase.purchases[purchase.purchases.length - 1].price === 'string') {
+                price = purchase.purchases[purchase.purchases.length - 1].price.substring(1);
+                total = parseFloat(price) * parseInt(purchase.purchases[purchase.purchases.length - 1].quantity)
             } else {
-                for (var i = 0; i < record.records[record.records.length - 1].price.length; i++) {
-                    price = record.records[record.records.length - 1].price[i].substring(1);
-                    total += parseFloat(price) * parseInt(record.records[record.records.length - 1].quantity[i])
+                for (var i = 0; i < purchase.purchases[purchase.purchases.length - 1].price.length; i++) {
+                    price = purchase.purchases[purchase.purchases.length - 1].price[i].substring(1);
+                    total += parseFloat(price) * parseInt(purchase.purchases[purchase.purchases.length - 1].quantity[i])
                 }
             }
 
             total = total.toFixed(1)
 
-            console.log("Record:")
-            console.log(record)
-
-            return res.view('user/record', { record: record.records[record.records.length - 1], count: count, list: list, total: total });
+            return res.view('user/record', { record: purchase.purchases[purchase.purchases.length - 1], count: count, list: list, total: total });
         } else {
 
-            var payment = await Payment.create(req.body).fetch();
+            var record = await Record.create(req.body).fetch();
 
-            console.log(req.body.method)
-
-            console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
-            console.log(payment)
+            // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+            // console.log(record)
 
             return res.redirect('/user/payment')
         }
@@ -328,52 +326,143 @@ module.exports = {
     },
 
     payment: async function (req, res) {
-        var user = await User.findOne(req.session.userid).populate("records");
+        var record = await User.findOne(req.session.userid).populate("records");
 
-        var payment = await User.findOne(req.session.userid).populate("payments");
+        // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+        // console.log(record)
+
+        // var record = await User.findOne(req.session.userid).populate("payments");
 
 
         if (req.method == "GET") {
 
-            return res.view('user/payment', { user: user, payment: payment });
+            return res.view('user/payment', { record: record });
 
-        }
-
-        // var purchase = await Purchase.create(req.body).fetch();
-
-        // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-        // console.log(purchase)
-
-        var product = await User.findOne(req.session.userid).populate("products");
-
-        if (product.products.length > 1) {
-            for (var i = 0; i < product.products.length; i++) {
-                await User.removeFromCollection(req.session.userid, "products").members(product.products[i].id);
-            }
         } else {
-            await User.removeFromCollection(req.session.userid, "products").members(product.products[0].id);
-        }
 
-        // var test = await Payment.create(req.body).fetch();
+            // var purchase = await Purchase.create(req.body).fetch();
 
-        // console.log(test)
+            // console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+            // console.log(purchase)
 
-        if (test.method == "ownValue") {
-            if (payment.payments[payment.payments.length - 1].total > req.session.value) {
-                return res.status(401).json("You have not enough money in your account!\n1. Please add money to your account.\n2. Please pay by credit card.")
+
+
+            // var test = await Payment.create(req.body).fetch();
+
+            // console.log(test)
+
+            var payment = await Payment.create(req.body).fetch();
+
+            var user = await User.findOne(req.session.userid);
+
+            console.log("Payments:")
+            console.log(payment)
+
+            console.log("Payments method:")
+            console.log(payment.method)
+
+            console.log("total:")
+            console.log(record.records[record.records.length - 1].total)
+
+            if (payment.method == "ownValue") {
+                if (record.records[record.records.length - 1].total > req.session.value) {
+                    return res.status(401).json("You have not enough money in your account!\n1. Please add money to your account.\n2. Please pay by credit card.")
+                } else {
+                    await User.updateOne(req.session.userid).set({ value: user.value.toFixed(1) - record.records[record.records.length - 1].total.toFixed(1) });
+                    req.session.value = user.value.toFixed(1) - record.records[record.records.length - 1].total.toFixed(1)
+
+                    var product = await User.findOne(req.session.userid).populate("products");
+
+                    if (product.products.length > 1) {
+                        for (var i = 0; i < product.products.length; i++) {
+                            await User.removeFromCollection(req.session.userid, "products").members(product.products[i].id);
+                        }
+                    } else {
+                        await User.removeFromCollection(req.session.userid, "products").members(product.products[0].id);
+                    }
+                    return res.ok()
+                }
             } else {
-                await User.updateOne(req.session.userid).set({ value: user.value.toFixed(1) - payment.payments[payment.payments.length - 1].total.toFixed(1) });
-                req.session.value = user.value.toFixed(1) - payment.payments[payment.payments.length - 1].total.toFixed(1)
+                var product = await User.findOne(req.session.userid).populate("products");
+
+                if (product.products.length > 1) {
+                    for (var i = 0; i < product.products.length; i++) {
+                        await User.removeFromCollection(req.session.userid, "products").members(product.products[i].id);
+                    }
+                } else {
+                    await User.removeFromCollection(req.session.userid, "products").members(product.products[0].id);
+                }
                 return res.ok()
             }
-        } else {
-            return res.ok()
         }
     },
 
     test: async function (req, res) {
         return res.view('user/test')
-    }
+    },
+
+    preference: async function (req, res) {
+        if (req.method == "GET") {
+
+            var userPreferences = await User.findOne(req.session.userid).populate("preferences");
+
+            var allPreferences = await Preference.find().populate("define");
+
+            var count = userPreferences.preferences.length;
+
+            var num = 0;
+
+            if (!userPreferences) return res.notFound();
+
+            return res.view('user/preference', { preferences: userPreferences, numOfRecords: count, allPreferences: allPreferences, count: num });
+        }
+    },
+
+    removePreference: async function (req, res) {
+        var thatUser = await User.findOne(req.session.userid);
+
+        if (!thatUser) return res.status(404).json("User not found.");
+
+        var thatPreference = await Preference.findOne(req.params.fk);
+
+        if (!thatPreference) return res.status(404).json("Preference not found.");
+
+        // if (thatProduct.purchase.length == 0)
+        //     return res.status(409).json("Nothing to delete.");    // conflict
+
+        var deletedPreference = await Preference.destroyOne(req.params.fk);
+
+        // await User.removeFromCollection(req.session.userid, "products").members(req.params.fk);
+
+        return res.ok();
+    },
+
+    editPreference: async function (req, res) {
+        // var deletedPreference = await Preference.destroyOne(req.body.id);
+
+        // var preference = await Preference.create(req.body).fetch();
+
+        var updatedPreference = await Preference.updateOne(req.body.id).set({
+            prePrice: req.body.prePrice,
+            preQuantity: req.body.preQuantity,
+            expiryDate: req.body.expiryDate
+        })
+
+        var userPreferences = await User.findOne(req.session.userid).populate("preferences");
+
+        var allPreferences = await Preference.find().populate("define");
+
+        var count = userPreferences.preferences.length;
+
+        var num = 0;
+
+        if (!userPreferences) return res.notFound();
+
+        return res.view('user/preference', { preferences: userPreferences, numOfRecords: count, allPreferences: allPreferences, count: num });
+
+    },
+
+
 };
 
 // action need equal to route

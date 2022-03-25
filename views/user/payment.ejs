@@ -1,4 +1,6 @@
 <!-- <form action="/user/payment" method="post"> -->
+<!-- <form action="/user/payment" method="POST" onsubmit="submitForm(this);return false"> -->
+
 <div class="column">
     <div class="field">
         <h3 style="font-size:4vw"><b>Payment method</b></h3>
@@ -7,7 +9,7 @@
         <div class="columns">
             <div class="column">
                 <b>Total amount:</b>
-                $<%= payment.payments[payment.payments.length - 1].total %>
+                $<%= record.records[record.records.length - 1].total %>
             </div>
             <div class="column">
                 <b>Current balance:</b>
@@ -40,26 +42,67 @@
             By own value
         </label>
     </div>
-    <input type="hidden" name="method" value="ownValue">
-    <input class="input" type="hidden" name="title" value="<%= user.records[user.records.length - 1].title %>">
-    <input class="input" type="hidden" name="price" value="<%= user.records[user.records.length - 1].price %>">
-    <input class="input" type="hidden" name="quantity" value="<%= user.records[user.records.length - 1].quantity %>">
+    <!-- <input type="hidden" name="method" value="ownValue"> -->
+    <input class="input" type="hidden" name="title" value="<%= record.records[record.records.length - 1].title %>">
+    <input class="input" type="hidden" name="price" value="<%= record.records[record.records.length - 1].price %>">
+    <input class="input" type="hidden" name="quantity"
+        value="<%= record.records[record.records.length - 1].quantity %>">
     <input class="input" type="hidden" name="make" value="<%= req.session.userid %>">
     <div class="field">
         <div class="control">
-            <button class="button is-link is-pulled-right" type="submit" onclick="submit()">Confirm</button>
+            <button class="button is-link is-pulled-right" type="submit"
+                onclick="submit('<%= record.records[record.records.length - 1].title %>','<%= record.records[record.records.length - 1].price %>', '<%= record.records[record.records.length - 1].quantity %>', '<%= req.session.userid %>', 'ownValue')">Confirm</button>
+            <!-- <button class="button is-link is-pulled-right" type="submit" onclick="">Confirm</button> -->
+            <!-- <button class=" button is-fullwidth is-info">
+                    Confirm
+                </button> -->
         </div>
     </div>
 </div>
 <!-- </form> -->
 
-<script>
-    async function submit() {
+<!-- <script>
+    async function submitForm(formElem) {
         var r = confirm("Confirm?");
 
         if (r) {
+
+            var response = await fetch(formElem.action, {
+                method: formElem.method,
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: new FormData(formElem),
+            });
+
+            if (response.ok) {
+                alert("Finished payment");
+                location.assign("/priceTracker/homepage");
+            } else if (response.status == 401) {
+                var msg = await response.json();
+                alert(msg);
+            } else {
+                alert(response.statusText);
+            }
+        } else {
+            alert(response.statusText);
+        }
+    };
+</script> -->
+
+<script>
+    async function submit(title, price, quantity, fk, method) {
+        var r = confirm("Confirm?");
+
+        if (r) {
+            const data = { title: title, price: price, quantity: quantity, make: fk, method: method }
+
             var response = await fetch("/user/payment", {
-                method: "POST"
+                method: "POST",
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
             });
 
             if (response.ok) {

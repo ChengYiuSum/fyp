@@ -81,6 +81,11 @@ module.exports = {
       via: 'create'
     },
 
+    purchases: {
+      collection: 'purchase',
+      via: 'finish'
+    },
+
     payments: {
       collection: 'payment',
       via: 'make'

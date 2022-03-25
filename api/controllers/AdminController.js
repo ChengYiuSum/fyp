@@ -124,6 +124,8 @@ module.exports = {
 
     matching: async function (req, res) {
         if (req.method == "GET") {
+            console.log("AutoMatching~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
+
             var allPreferences = await Preference.find().populate("define");
 
             for (var i = 0; i < allPreferences.length; i++) {

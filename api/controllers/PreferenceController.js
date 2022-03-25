@@ -6,7 +6,13 @@
  */
 
 module.exports = {
-  
+    preference: async function (req, res) {
+        var allPreferences = await Preference.find().populate("define");
+
+        if (!allPreferences) return res.notFound();
+
+        return res.json(allPreferences);
+    }
 
 };
 

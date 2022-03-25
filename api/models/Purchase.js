@@ -12,9 +12,9 @@ module.exports = {
     //  ╔═╗╦═╗╦╔╦╗╦╔╦╗╦╦  ╦╔═╗╔═╗
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
     //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝
-    paidDate: {
-      type: "string"
-    },
+    // paidDate: {
+    //   type: "string"
+    // },
 
     title: {
       type: "json",
@@ -26,25 +26,14 @@ module.exports = {
       columnType: 'array'
     },
 
-    quantity: {
+    shop: {
       type: "json",
       columnType: 'array'
     },
 
-    total: {
-      type: "number"
-    },
-
-    cardNum: {
-      type: "number"
-    },
-
-    safeCode: {
-      type: "number"
-    },
-
-    method: {
-      type: "string"
+    quantity: {
+      type: "json",
+      columnType: 'array'
     },
 
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
@@ -55,6 +44,10 @@ module.exports = {
     //  ╔═╗╔═╗╔═╗╔═╗╔═╗╦╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
+
+    finish: {
+      model: 'user'
+    },
 
   },
 
