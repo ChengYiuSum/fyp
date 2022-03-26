@@ -13,25 +13,7 @@ module.exports = {
     //  ╠═╝╠╦╝║║║║║ ║ ║╚╗╔╝║╣ ╚═╗
     //  ╩  ╩╚═╩╩ ╩╩ ╩ ╩ ╚╝ ╚═╝╚═╝
 
-    title: {
-      type: "string",
-      // unique: true,
-      // required: true
-    },
-
     price: {
-      type: "string"
-    },
-
-    imgUrl: {
-      type: "string"
-    },
-
-    shop: {
-      type: "string"
-    },
-
-    type: {
       type: "string"
     },
 
@@ -47,6 +29,10 @@ module.exports = {
     //  ╔═╗╔═╗╔═╗╔═╗╔═╗╦╔═╗╔╦╗╦╔═╗╔╗╔╔═╗
     //  ╠═╣╚═╗╚═╗║ ║║  ║╠═╣ ║ ║║ ║║║║╚═╗
     //  ╩ ╩╚═╝╚═╝╚═╝╚═╝╩╩ ╩ ╩ ╩╚═╝╝╚╝╚═╝
+
+    have: {
+      model: 'priceTracker'
+    }
 
   },
 

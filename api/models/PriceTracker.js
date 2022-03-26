@@ -56,6 +56,11 @@ module.exports = {
     preferences: {
       collection: 'preference',
       via: 'own'
+    },
+
+    charts: {
+      collection: 'product',
+      via: 'have'
     }
 
   },

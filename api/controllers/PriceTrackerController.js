@@ -320,11 +320,22 @@ module.exports = {
     product: async function (req, res) {
         var thatProduct = await PriceTracker.findOne(req.params.id);
 
+        var thatProductChart = await PriceTracker.findOne(req.params.id).populate("charts");
+
+        var date = []
+        var price = []
+
+        for (var i = 0; i < thatProductChart.charts.length; i++) {
+            date.push(thatProductChart.charts[i].date);
+            priceStr = thatProductChart.charts[i].price.substring(1)
+            price.push(parseInt(priceStr));
+        }
+
         if (!thatProduct) return res.notFound();
 
         if (req.method == "GET") {
 
-            return res.view('priceTracker/product', { product: thatProduct })
+            return res.view('priceTracker/product', { product: thatProduct, date: date, price: price })
 
         } else {
 

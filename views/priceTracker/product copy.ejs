@@ -8,36 +8,11 @@
         padding-bottom: 10px;
     }
 
-    #myModal {
-        /* border: 10px solid rgb(227, 235, 241); */
-        display: none;
-        /* text-align: center; */
-        border-radius: 25px;
-        width: 100%;
-        height: 5%
-    }
-
-    .modalContent {
-        border-radius: 25px;
-        background-color: rgb(255, 255, 255);
-        height: 100%
-    }
-
-    /* #myModal {
-        border-radius: 25px;
-        background-color: rgb(227, 235, 241);
-
-    } */
-
-    #myChart {
-        /* padding-top: 50px; */
-        height: 75%;
-        margin: 0 auto;
-    }
+    
 </style>
 
 <body>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
+    <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
 
     <!-- <form action="/priceTracker/homepage" method="POST"> -->
     <div class="columns">
@@ -63,18 +38,11 @@
                 </li>
             </div>
             <div class="level-right">
-                <button id='btn' class='button is-rounded is-link is-small' value='<%= date %>'>
-                    <i class="fas fa-chart-line"></i>
-                </button>
-                <input type="hidden" id="btn1" value="<%= price %>">
-                </input>
-
-                <div id="myModal">
-                    <div class="modalContent">
-                        <span class="close"> &times; </span>
-                        <canvas id="myChart" style="width:100%;max-width:550px"></canvas>
-                    </div>
-                </div>
+                <a class="level-item" aria-label="reply">
+                    <span class="icon is-small">
+                        <button class="fas fa-chart-line" onClick="showchart('<%= date %>', '<%= price %>')"></button>
+                    </span>
+                </a>
             </div>
 
             <div class="field is-grouped">
@@ -145,18 +113,28 @@
     </form>
 
     <script>
-        function renderChart(date, price) {
-            console.log(date)
-            console.log(price)
+        async function showchart(date, price) {
 
             var xValues = date
             var yValues = price
+
             const xArray = xValues.split(",")
             const yArray = yValues.split(",")
 
-            var ctx = document.getElementById("myChart").getContext('2d');
-            var myChart = new Chart(ctx, {
-                type: 'line',
+            // alert(typeof (xArray))
+            // alert(typeof (yArray))
+
+            // console.log(xArray)
+            // console.log(yArray)
+
+            // var xValuess = ['11-3-2022', '12-3-2022', '13-3-2022', '14-3-2022', '15-3-2022', '16-3-2022', '17-3-2022', '18-3-2022', '19-3-2022', '20-3-2022', '21-3-2022', '22-3-2022'];
+            // var yValuess = [20, 21, 21, 21, 21, 21, 21, 19, 19, 19, 10, 10];
+
+            // alert(typeof (xValuess))
+            // alert(typeof (yValuess))
+
+            new Chart("myChart", {
+                type: "line",
                 data: {
                     labels: xArray,
                     datasets: [{
@@ -164,7 +142,7 @@
                         lineTension: 0,
                         backgroundColor: "rgba(0,0,255,1.0)",
                         borderColor: "rgba(0,0,255,0.1)",
-                        data: yArray,
+                        data: yArray
                     }]
                 },
                 options: {
@@ -175,30 +153,8 @@
                 }
             });
         }
-        var modal = document.getElementById("myModal");
-        var btn = document.getElementById("btn");
-        var span = document.getElementsByClassName("close")[0];
-        var date = document.getElementById("btn").value;
-        var price = document.getElementById("btn1").value;
-
-
-        btn.onclick = function () {
-            modal.style.display = 'block'
-            renderChart(date, price);
-        }
-
-        span.onclick = function () {
-            modal.style.display = 'none';
-        }
-
-        window.onclick = function (event) {
-            if (event.target == modal) {
-                modal.style.display = 'none';
-            }
-        }
     </script>
 </body>
-
 
 <script>
     async function purchase(fk) {

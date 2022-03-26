@@ -2,50 +2,97 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
 </script>
 
+<style>
+    .modal {
+        border: 100px solid rgb(227, 235, 241);
+        display: none;
+        text-align: center;
+    }
+
+    .modalContent {
+        background-color: rgb(255, 255, 255);
+    }
+
+    #myChart {
+        padding-top: 50px;
+        margin: 0 auto;
+    }
+</style>
+
+
+
 <body>
-    <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.bundle.min.js"></script>
 
-    date: <%= date %>
-        price: <%= price %>
+    <body>
+        <button id='btn' class='button' value='<%= date %>'>
+            Data
+        </button>
+        <input type="hidden" id="btn1" value="<%= price %>">
+        </input>
 
-            <button class="is-link" onClick="showchart('<%= date %>', '<%= price %>')">Edit
-            </button>
+        <div id="myModal" class="modal">
+            <div class="modalContent">
+                <span class="close"> &times; </span>
+                <canvas id="myChart" style="width:100%;max-width:550px"></canvas>
+            </div>
+        </div>
+    </body>
 
-            <script>
-                async function showchart(date, price) {
 
-                    var xValues = date
-                    var yValues = price
 
-                    alert(typeof(xValues))
-                    alert(typeof(yValues))
 
-                    var xValuess = ['11-3-2022', '12-3-2022', '13-3-2022', '14-3-2022', '15-3-2022', '16-3-2022', '17-3-2022', '18-3-2022', '19-3-2022', '20-3-2022', '21-3-2022', '22-3-2022'];
-                    var yValuess = [20, 21, 21, 21, 21, 21, 21, 19, 19, 19, 10, 10];
+    <script>
+        function renderChart(date, price) {
+            console.log(date)
+            console.log(price)
 
-                    alert(typeof(xValuess))
-                    alert(typeof(yValuess))
+            var xValues = date
+            var yValues = price
+            const xArray = xValues.split(",")
+            const yArray = yValues.split(",")
 
-                    new Chart("myChart", {
-                        type: "line",
-                        data: {
-                            labels: xValues,
-                            datasets: [{
-                                fill: false,
-                                lineTension: 0,
-                                backgroundColor: "rgba(0,0,255,1.0)",
-                                borderColor: "rgba(0,0,255,0.1)",
-                                data: yValues
-                            }]
-                        },
-                        options: {
-                            legend: { display: false },
-                            scales: {
-                                yAxes: [{ ticks: { min: 10, max: 50 } }],
-                            }
-                        }
-                    });
+            var ctx = document.getElementById("myChart").getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: xArray,
+                    datasets: [{
+                        fill: false,
+                        lineTension: 0,
+                        backgroundColor: "rgba(0,0,255,1.0)",
+                        borderColor: "rgba(0,0,255,0.1)",
+                        data: yArray,
+                    }]
+                },
+                options: {
+                    legend: { display: false },
+                    scales: {
+                        yAxes: [{ ticks: { min: 10, max: 100 } }],
+                    }
                 }
-            </script>
+            });
+        }
+        var modal = document.getElementById("myModal");
+        var btn = document.getElementById("btn");
+        var span = document.getElementsByClassName("close")[0];
+        var date = document.getElementById("btn").value;
+        var price = document.getElementById("btn1").value;
 
+
+        btn.onclick = function () {
+            modal.style.display = 'block'
+            renderChart(date, price);
+        }
+
+        span.onclick = function () {
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+    </script>
 </body>

@@ -145,6 +145,8 @@ module.exports = {
                         })
                     }, function (err) { console.log(err || "It worked!") })
                 } else {
+                    console.log("matched unsuccess")
+
                     const today = new Date();
 
                     let y = today.getFullYear();
@@ -154,6 +156,8 @@ module.exports = {
                     var date = y + "-" + m + "-" + d
 
                     if (allPreferences[i].expiryDate < date) {
+                        console.log("Expired")
+
                         await Preference.destroyOne(allPreferences[i].id);
                     }
                 }

@@ -93,8 +93,9 @@ module.exports.routes = {
   'GET /preference/json': 'PreferenceController.preference',
 
   'GET /product/json': 'ProductController.json',
-  'GET /product/chart': 'ProductController.chart',
-
+  'GET /product/chart/:id': 'ProductController.chart',
+  'GET /product/scrape': 'ProductController.scrape',
+  'GET /product/:id/chart/json': 'ProductController.populate_chart',
 
 
   // 'GET /user/test': 'UserController.test',

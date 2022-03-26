@@ -1,291 +1,127 @@
-<!DOCTYPE html>
 <html>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
 
-<head>
-  <title>New Sails App</title>
-
-  <!-- Viewport mobile tag for sensible mobile support -->
-  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-
-  <script src="https://unpkg.com/react/umd/react.production.min.js"></script>
-  <script src="https://unpkg.com/react-dom/umd/react-dom.production.min.js"></script>
-  <script src="https://unpkg.com/prop-types/prop-types.min.js"></script>
-  <script src="https://unpkg.com/recharts/umd/Recharts.js"></script>
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-  <% /* If you want to discourage search engines from indexing this site, uncomment the following line: */%>
-    <% /* <meta name="robots" content="noindex"> */%>
-
-
-      <!--
-        Stylesheets and Preprocessors
-        ==============================
-
-        You can always bring in CSS files manually with `<link>` tags, or asynchronously
-        using a solution like AMD (RequireJS).  Or, if you like, you can take advantage
-        of Sails' conventional asset pipeline (boilerplate Gruntfile).
-
-        By default, stylesheets from your `assets/styles` folder are included
-        here automatically (between STYLES and STYLES END). Both CSS (.css) and LESS (.less)
-        are supported. In production, your styles will be minified and concatenated into
-        a single file.
-
-        To customize any part of the built-in behavior, just edit `tasks/pipeline.js`.
-        For example, here are a few things you could do:
-
-            + Change the order of your CSS files
-            + Import stylesheets from other directories
-            + Use a different or additional preprocessor, like SASS, SCSS or Stylus
-    -->
-
-      <!--STYLES-->
-      <link rel="stylesheet" href="/styles/importer.css">
-      <!--STYLES END-->
-
-      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.0/css/bulma.min.css">
-</head>
+<style>
+    .modal {
+        border: 1px solid black;
+        display: none;
+    }
+</style>
 
 <body>
-  <style>
-    .navbar-item {
-      color: rgb(30, 116, 197);
-    }
+    <canvas id="myChart" style="width:100%;max-width:600px"></canvas>
 
-    .container {
-      margin-right: auto;
-      margin-left: auto;
-      /* background-color: rgb(255, 255, 255); */
-    }
+    <!-- onClick="showchart('<%= date %>', '<%= price %>')" -->
 
-    .column {
-      background-color: rgb(255, 255, 255);
-    }
+    <button class="button" id="btn1" value="<%= date %>">
+        Edit
+    </button>
+    <input type="hidden" id="btn2" value="<%= price %>">
+    </input>
 
-    #corner {
-      border-radius: 25px;
-      border: 2px solid rgb(156, 204, 245);
-      padding: 20px;
-    }
-
-    .section {
-      background-color: rgb(226, 236, 245);
-    }
-
-    body,
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      font-family: "Raleway", Arial, Helvetica, sans-serif
-    }
-
-    /* .section {
-      background-color: rgb(226, 236, 245);
-    } */
-  </style>
-
-  <% if (req.session.userid) { %>
-    <div class="w3-bar w3-white w3-large">
-
-      <a href="http://localhost:1337/priceTracker/homepage" class="w3-bar-item w3-button w3-mobile"><img
-          src="https://www.linkpicture.com/q/Shop-name-2.png" width="110"></a>
-      <p class="w3-bar-item w3-mobile">
-        Hi, <%= req.session.name %>
-      </p>
-      <a href="http://localhost:1337/priceTracker/homepage" class="w3-bar-item w3-button w3-mobile">Home</a>
-      <a href="http://localhost:1337/user/preference" class="w3-bar-item w3-button w3-mobile">Preference</a>
-      <a class="w3-bar-item w3-button w3-mobile" onclick="logout('<%= req.session.userid %>')">Logout</a>
-      <a href="http://localhost:1337/user/account/<%= req.session.userid %>"
-        class="w3-bar-item w3-button w3-right w3-mobile"><i class="fa fa-user" style="font-size:36px"></i></a>
-      <a href="http://localhost:1337/user/wallet/<%= req.session.userid %>"
-        class="w3-bar-item w3-button w3-right w3-mobile"><i class="fa fa-wallet" style="font-size:36px"></i></a>
-      <a href="http://localhost:1337/user/purchase" class="w3-bar-item w3-button w3-right w3-mobile"><i
-          class="fa fa-shopping-cart" style="font-size:36px"></i></a>
-      <a href="http://localhost:1337/admin/setting" class="w3-bar-item w3-button w3-right w3-mobile"><i
-          class="fa fa-cog" style="font-size:36px"></i></a>
+    <div id="myModal" class="modal">
+        <div class="modalContent">
+            <span class="close"> &times; </span>
+            <canvas id="myChart"></canvas>
+        </div>
     </div>
-    <!-- </div> -->
 
-    <!-- <div class="navbar-end"> -->
-    <!-- <a class="w3-bar-item w3-button w3-right w3-light-grey w3-mobile"
-      href="http://localhost:1337/user/account/<%= req.session.userid %>">
-      <i class="fa fa-user" style="font-size:36px"></i>
-    </a>
-    <a class="w3-bar-item w3-button w3-right w3-light-grey w3-mobile" href="http://localhost:1337/user/wallet">
-      <i class="fa fa-wallet" style="font-size:36px"></i>
-    </a>
-    <a class="w3-bar-item w3-button w3-right w3-light-grey w3-mobile" href="http://localhost:1337/user/purchase">
-      <i class="fa fa-shopping-cart" style="font-size:36px"></i>
-    </a>
-    <a class="w3-bar-item w3-button w3-right w3-light-grey w3-mobile" href="http://localhost:1337/admin/setting">
-      <i class="fas fa-cog" style="font-size:36px"></i>
-    </a> -->
-    <!-- </div> -->
+    <script>
+        function renderChart(date, price) {
+            console.log(date)
+            console.log(price)
+            console.log(typeof (date))
 
-    <!-- <nav class="navbar" role="navigation" aria-label="main navigation">
-      <div class="navbar-brand">
-        <a class="navbar-item" href="http://localhost:1337/priceTracker/homepage">
-          <img src="https://www.linkpicture.com/q/Shop-name-2.png" width="100" height="300">
-        </a>
+            var xValues = date
+            var yValues = price
+            const xArray = xValues.split(",")
+            const yArray = yValues.split(",")
 
-        <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false"
-          data-target="navbarBasicExample">
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-          <span aria-hidden="true"></span>
-        </a>
-      </div>
-
-      <div id="navbarBasicExample" class="navbar-menu">
-        <div class="navbar-start">
-          <p class="navbar-item">
-            Hi, <%= req.session.name %>
-          </p>
-          <a class="navbar-item" href="http://localhost:1337/priceTracker/homepage">
-            Home
-          </a>
-          <a class="navbar-item" href="http://localhost:1337/user/preference">
-            Preference
-          </a>
-          <a class="navbar-item" onclick="logout('<%= req.session.userid %>')">
-            Logout
-          </a>
-        </div>
-      </div>
-
-      <div class="navbar-end">
-        <div class="navbar-item">
-          <div class="buttons">
-            <a class="button is-white" href="http://localhost:1337/user/account/<%= req.session.userid %>">
-              <i class="fa fa-user" style="font-size:36px"></i>
-            </a>
-            <a class="button is-white" href="http://localhost:1337/user/wallet/<%= req.session.userid %>">
-              <i class="fa fa-wallet" style="font-size:36px"></i>
-            </a>
-            <a class="button is-white" href="http://localhost:1337/user/purchase">
-              <i class="fa fa-shopping-cart" style="font-size:36px"></i>
-            </a>
-            <a class="button is-white" href="http://localhost:1337/admin/setting">
-              <i class="fas fa-cog" style="font-size:36px"></i>
-            </a>
-          </div>
-        </div>
-      </div>
-    </nav> -->
-    <% } %>
-
-
-
-      <section class="section">
-        <div class="container columns is-centered">
-          <div class="column is-half" id="corner">
-
-            <%- body %>
-
-          </div>
-        </div>
-      </section>
-
-      <!-- Footer -->
-      <!-- <footer class="w3-padding-32 w3-light-blue w3-center w3-margin-top">
-        <p><a href="/priceTracker/homepage" class="w3-hover-text-white">PriceTracker</a></p>
-      </footer> -->
-
-
-
-      <!--
-        Client-side Templates
-        ========================
-
-        HTML templates are important prerequisites of modern, rich client applications.
-        To work their magic, frameworks like React, Vue.js, Angular, Ember, and Backbone
-        require that you load these templates client-side.
-
-        By default, your Gruntfile is configured to automatically load and precompile
-        client-side JST templates in your `assets/templates` folder, then
-        include them here automatically (between TEMPLATES and TEMPLATES END).
-
-        To customize this behavior to fit your needs, just edit `tasks/pipeline.js`.
-        For example, here are a few things you could do:
-
-            + Import templates from other directories
-            + Use a different view engine (handlebars, dust, pug/jade, etc.)
-            + Internationalize your client-side templates using a server-side
-              stringfile before they're served.
-    -->
-
-      <!--TEMPLATES-->
-      <!--TEMPLATES END-->
-
-
-      <!--
-        Server-side View Locals
-        ========================
-
-        Sometimes, it's convenient to get access to your server-side view locals from
-        client-side JavaScript.  This can improve page load times, remove the need for
-        extra AJAX requests, and make your client-side code easier to understand and
-        to maintain.  Sails provides a simple mechanism for accessing dynamic view
-        locals: the "exposeLocalsToBrowser()" view partial.
-
-        For more information on using this built-in feature, see:
-        https://sailsjs.com/docs/concepts/views/locals#?escaping-untrusted-data-using-exposelocalstobrowser
-
-    -->
-
-
-      <!--
-
-      Client-side Javascript
-      ========================
-
-      You can always bring in JS files manually with `script` tags, or asynchronously
-      on the client using a solution like AMD (RequireJS).  Or, if you like, you can
-      take advantage of Sails' conventional asset pipeline (boilerplate Gruntfile).
-
-      By default, files in your `assets/js` folder are included here
-      automatically (between SCRIPTS and SCRIPTS END).  Both JavaScript (.js) and
-      CoffeeScript (.coffee) are supported. In production, your scripts will be minified
-      and concatenated into a single file.
-
-      To customize any part of the built-in behavior, just edit `tasks/pipeline.js`.
-      For example, here are a few things you could do:
-
-          + Change the order of your scripts
-          + Import scripts from other directories
-          + Use a different preprocessor, like TypeScript
-
-    -->
-
-      <!--SCRIPTS-->
-      <script src="/dependencies/sails.io.js"></script>
-      <!--SCRIPTS END-->
-      <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
-
-      <script>
-        async function logout() {
-          var r = confirm("Logout?");
-
-          if (r) {
-            var response = await fetch("/user/logout", {
-              method: "POST"
+            var ctx = document.getElementById("myChart").getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: xArray,
+                    datasets: [{
+                        fill: false,
+                        lineTension: 0,
+                        backgroundColor: "rgba(0,0,255,1.0)",
+                        borderColor: "rgba(0,0,255,0.1)",
+                        data: yArray
+                    }]
+                },
+                options: {
+                    legend: { display: false },
+                    scales: {
+                        yAxes: [{ ticks: { min: 10, max: 100 } }],
+                    }
+                }
             });
+        }
+        var modal = document.getElementById("myModal");
+        var btn = document.getElementById("btn");
+        var span = document.getElementsByClassName("close")[0];
+        var date = document.getElementById("btn1").value;
+        var price = document.getElementById("btn2").value;
 
-            if (response.ok) {
-              alert("Logout success");
-              location.assign("/");
-            } else {
-              alert(response.status + ": " + response.statusText);
+        btn1.onclick = function () {
+            modal.style.display = 'block'
+            renderChart(date, price);
+        }
+
+        span.onclick = function () {
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function (event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
             }
-          } else {
-            alert(response.statusText);
-          }
-        };
-      </script>
-</body>
+        }
+    </script>
 
-</html>
+    <script>
+        async function showchart(date, price) {
+
+            var xValues = date
+            var yValues = price
+
+            const xArray = xValues.split(",")
+            const yArray = yValues.split(",")
+
+            // alert(typeof (xArray))
+            // alert(typeof (yArray))
+
+            // console.log(xArray)
+            // console.log(yArray)
+
+            // var xValuess = ['11-3-2022', '12-3-2022', '13-3-2022', '14-3-2022', '15-3-2022', '16-3-2022', '17-3-2022', '18-3-2022', '19-3-2022', '20-3-2022', '21-3-2022', '22-3-2022'];
+            // var yValuess = [20, 21, 21, 21, 21, 21, 21, 19, 19, 19, 10, 10];
+
+            // alert(typeof (xValuess))
+            // alert(typeof (yValuess))
+
+            new Chart("myChart", {
+                type: "line",
+                data: {
+                    labels: xArray,
+                    datasets: [{
+                        fill: false,
+                        lineTension: 0,
+                        backgroundColor: "rgba(0,0,255,1.0)",
+                        borderColor: "rgba(0,0,255,0.1)",
+                        data: yArray
+                    }]
+                },
+                options: {
+                    legend: { display: false },
+                    scales: {
+                        yAxes: [{ ticks: { min: 10, max: 100 } }],
+                    }
+                }
+            });
+        }
+    </script>
+
+</body>
