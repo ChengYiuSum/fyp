@@ -406,7 +406,7 @@ module.exports = {
             }
 
             console.log(message)
-            return res.view('priceTracker/product', { product: thatProduct, message: message })
+            return res.view('priceTracker/product', { product: thatProduct, message: message, date: date, price: price })
         }
     },
 

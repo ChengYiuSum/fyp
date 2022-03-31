@@ -1,0 +1,87 @@
+<p>Dear <%=recipientName%>,</p>
+<br />
+
+<div>
+    <div class="col">
+        <div class="form-group">
+            <label style="color: black">
+                Thank you for making purchase in PriceTracker. Below is your order record:
+            </label>
+        </div>
+
+        <br>
+
+        <table class="table">
+
+
+            <thead>
+                <tr>
+                    <th scope="col">Title<br></th>
+                    <th scope="col">Quantity<br></th>
+                    <th scope="col">Price<br></th>
+                </tr>
+            </thead>
+
+            <tfoot>
+                <tr>
+                    <th></th>
+                    <th>Total:</th>
+                    <th>
+                        $<%= payment.total %>
+                    </th>
+                </tr>
+            </tfoot>
+
+
+            <% if(typeof payment.price==='string' ) { %>
+                <tbody id="myTable">
+                    <tr>
+                        <td>
+                            <%= payment.title %>
+                        </td>
+                        <td>
+                            <%= payment.price %>
+                        </td>
+                        <td>
+                            <%= payment.quantity %>
+                        </td>
+                    </tr>
+                </tbody>
+                <% } else { %>
+                    <% payment.price.forEach( function(price) { %>
+                        <tbody id="myTable">
+                            <tr>
+                                <td>
+                                    <%= payment.title[count] %>
+                                </td>
+                                <td>
+                                    <%= price %>
+                                </td>
+                                <td>
+                                    <%= payment.quantity[count] %>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <% count++; %>
+                            <% }); %>
+                                <% } %>
+        </table>
+    </div>
+</div>
+
+<!-- <div>
+    <div class="col">
+        <div class="form-group">
+            <label style="color: black">
+                The price is now dropped to your preferenced price.
+            </label>
+        </div>
+    </div>
+</div> -->
+
+<p style="color: rgb(45, 176, 216); font-size:160%; font-family:Century Gothic; ">
+    <%=senderName%>
+</p>
+<a href="http://localhost:1337/priceTracker/homepage">
+    <img src="https://www.linkpicture.com/q/Shop-name-2.png" width="500" height="200">
+</a>

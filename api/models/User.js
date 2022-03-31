@@ -57,6 +57,10 @@ module.exports = {
       type: 'number',
     },
 
+    agreement: {
+      type: 'string'
+    },
+
     //  ╔═╗╔╦╗╔╗ ╔═╗╔╦╗╔═╗
     //  ║╣ ║║║╠╩╗║╣  ║║╚═╗
     //  ╚═╝╩ ╩╚═╝╚═╝═╩╝╚═╝

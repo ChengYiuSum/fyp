@@ -2,6 +2,10 @@
     .level-right {
         padding-bottom: 25px;
     }
+
+    .control {
+        text-align: center;
+    }
 </style>
 
 <div class="columns">
@@ -58,19 +62,19 @@
 
                             <div class="modal-content">
                                 <div class="box">
-                                    <form action="/user/wallet/update/<%= user.id %>`" method="POST">
+                                    <form action="/user/wallet/update/<%= user.id %>" method="POST">
                                         <p style="font-size:30px"><b>New Card Information</b></p>
                                         <div class="field">
                                             <label class="label">Card type:</label>
-                                            <div class="control">
-                                                <div class="select">
-                                                    <select type="text" name="cardType" required>
-                                                        <option value="" disabled></option>
-                                                        <option value="Visa">Visa</option>
-                                                        <option value="Mastercard">Mastercard</option>
-                                                    </select>
-                                                </div>
+                                            <!-- <div class="control"> -->
+                                            <div class="select">
+                                                <select type="text" name="cardType" required>
+                                                    <option value="" disabled></option>
+                                                    <option value="Visa">Visa</option>
+                                                    <option value="Mastercard">Mastercard</option>
+                                                </select>
                                             </div>
+                                            <!-- </div> -->
                                         </div>
                                         <div class="field">
                                             <label class="label">Card number:</label>
@@ -80,15 +84,15 @@
                                         </div>
                                         <div class="field">
                                             <label class="checkbox">
-                                                <input type="checkbox">
+                                                <input type="checkbox" name="agreement" value="agree">
                                                 I agree to the system could buy for me when my prefered price is
                                                 arrived.
                                             </label>
                                         </div>
                                         <div class="field">
-                                            <div class="control">
-                                                <button class="button is-link" type="submit">Confirm</button>
-                                            </div>
+                                            <!-- <div class="control"> -->
+                                            <button class="button is-link" type="submit">Confirm</button>
+                                            <!-- </div> -->
                                         </div>
                                     </form>
                                 </div>
@@ -99,57 +103,57 @@
                     </div>
                 </div>
                 <% } else { %>
-                    <div class="control">
-                        <button class="js-modal-trigger button is-link" data-target="modal-js-example">
-                            Add card
-                        </button>
-                    </div>
+                    <!-- <div class="control"> -->
+                    <button class="js-modal-trigger button is-link" data-target="modal-js-example">
+                        Add card
+                        <!-- </button> -->
+        </div>
 
-                    <div id="modal-js-example" class="modal">
-                        <div class="modal-background"></div>
+        <div id="modal-js-example" class="modal">
+            <div class="modal-background"></div>
 
-                        <div class="modal-content">
-                            <div class="box">
-                                <form action="/user/wallet/<%= user.id %>" method="POST">
-                                    <p style="font-size:30px"><b>Card Information</b></p>
-                                    <div class="field">
-                                        <label class="label">Card type:</label>
-                                        <div class="control">
-                                            <div class="select">
-                                                <select type="text" name="cardType" required>
-                                                    <option value="" disabled></option>
-                                                    <option value="Visa">Visa</option>
-                                                    <option value="Mastercard">Mastercard</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="field">
-                                        <label class="label">Card number:</label>
-                                        <div class="control">
-                                            <input class="input" type="text" name="cardNum" required>
-                                        </div>
-                                    </div>
-                                    <div class="field">
-                                        <label class="checkbox">
-                                            <input type="checkbox">
-                                            I agree to the system could buy for me when my prefered price is arrived.
-                                        </label>
-                                    </div>
-                                    <div class="field">
-                                        <div class="control">
-                                            <button class="button is-link" type="submit">Confirm</button>
-                                        </div>
-                                    </div>
-                                </form>
+            <div class="modal-content">
+                <div class="box">
+                    <form action="/user/wallet/<%= user.id %>" method="POST">
+                        <p style="font-size:30px"><b>Card Information</b></p>
+                        <div class="field">
+                            <label class="label">Card type:</label>
+                            <!-- <div class="control"> -->
+                            <div class="select">
+                                <select type="text" name="cardType" required>
+                                    <option value="" disabled></option>
+                                    <option value="Visa">Visa</option>
+                                    <option value="Mastercard">Mastercard</option>
+                                </select>
+                            </div>
+                            <!-- </div> -->
+                        </div>
+                        <div class="field">
+                            <label class="label">Card number:</label>
+                            <div class="control">
+                                <input class="input" type="text" name="cardNum" required>
                             </div>
                         </div>
+                        <div class="field">
+                            <label class="checkbox">
+                                <input type="checkbox" name="agreement" value="agree">
+                                I agree to the system could buy for me when my prefered price is arrived.
+                            </label>
+                        </div>
+                        <div class="field">
+                            <!-- <div class="control"> -->
+                            <button class="button is-link" type="submit">Confirm</button>
+                            <!-- </div> -->
+                        </div>
+                    </form>
+                </div>
+            </div>
 
-                        <button class="modal-close is-large" aria-label="close"></button>
-                    </div>
-                    <% } %>
+            <button class="modal-close is-large" aria-label="close"></button>
         </div>
+        <% } %>
     </div>
+</div>
 </div>
 
 <script>

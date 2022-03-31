@@ -1,5 +1,11 @@
 <!-- <form action="/user/payment" method="post"> -->
 <!-- <form action="/user/payment" method="POST" onsubmit="submitForm(this);return false"> -->
+<style>
+    .radio {
+        padding-bottom: 10px;
+    }
+</style>
+
 
 <div class="column">
     <div class="field">
@@ -20,7 +26,7 @@
     <br>
     <div>
         <label class="radio">
-            <input type="radio" name="method" value="creditCard">
+            <input type="radio" name="method" value="creditCard" id="method">
             By credit card (Please input the CVV code behind your credit card.)
         </label>
     </div>
@@ -38,7 +44,7 @@
     <br>
     <div>
         <label class="radio">
-            <input type="radio" name="method" value="ownValue">
+            <input type="radio" name="method" value="ownValue" id="method">
             By own value
         </label>
     </div>
@@ -47,11 +53,12 @@
     <input class="input" type="hidden" name="price" value="<%= record.records[record.records.length - 1].price %>">
     <input class="input" type="hidden" name="quantity"
         value="<%= record.records[record.records.length - 1].quantity %>">
+    <input class="input" type="hidden" name="total" value="<%= record.records[record.records.length - 1].total %>">
     <input class="input" type="hidden" name="make" value="<%= req.session.userid %>">
     <div class="field">
         <div class="control">
             <button class="button is-link is-pulled-right" type="submit"
-                onclick="submit('<%= record.records[record.records.length - 1].title %>','<%= record.records[record.records.length - 1].price %>', '<%= record.records[record.records.length - 1].quantity %>', '<%= req.session.userid %>', 'ownValue')">Confirm</button>
+                onclick="submit('<%= record.records[record.records.length - 1].title %>','<%= record.records[record.records.length - 1].price %>', '<%= record.records[record.records.length - 1].quantity %>', '<%= req.session.userid %>', '<%= record.records[record.records.length - 1].total %>')">Confirm</button>
             <!-- <button class="button is-link is-pulled-right" type="submit" onclick="">Confirm</button> -->
             <!-- <button class=" button is-fullwidth is-info">
                     Confirm
@@ -91,11 +98,24 @@
 </script> -->
 
 <script>
-    async function submit(title, price, quantity, fk, method) {
+    async function submit(title, price, quantity, fk, total) {
         var r = confirm("Confirm?");
 
+        var methods;
+
+        var ele = document.getElementsByName('method');
+
+        for (i = 0; i < ele.length; i++) {
+            if (ele[i].checked)
+                methods = ele[i].value
+        }
+
+        console.log(methods)
+
+
+
         if (r) {
-            const data = { title: title, price: price, quantity: quantity, make: fk, method: method }
+            const data = { title: title, price: price, quantity: quantity, make: fk, method: methods, total: total }
 
             var response = await fetch("/user/payment", {
                 method: "POST",

@@ -1,191 +1,211 @@
-<div class="content admin w-100">
+<% if (preferences.preferences.length> 0) { %>
+    <div class="content admin w-100">
 
-    <h3 style="font-size:4vw"><b>Preference</b></h3>
+        <h3 style="font-size:4vw"><b>Preference</b></h3>
 
-    <section class="container-fluid">
+        <section class="container-fluid">
 
-        <div class="row">
-            <div class="col ">
-                Total Number: <%= numOfRecords %>
+            <div class="row">
+                <div class="col ">
+                    Total Number: <%= numOfRecords %>
+                </div>
             </div>
-        </div>
-        <br>
+            <br>
 
-        <table class="table table-striped">
-
-
-            <thead>
-
-                <th scope="col" width="50%">Title <br></th>
-                <th scope="col" width="10%">Prefered Price <br></th>
-                <th scope="col" width="10%">Prefered Quantity <br></th>
-                <th scope="col" width="30%">Expriy Date <br></th>
-                <th scope="col"> <br></th>
-                <th scope="col"> <br></th>
-            </thead>
+            <table class="table table-striped">
 
 
-            <tbody id="myTable">
+                <thead>
 
-                <% preferences.preferences.forEach( function(preference) { %>
+                    <th scope="col" width="50%">Title <br></th>
+                    <th scope="col" width="10%">Prefered Price <br></th>
+                    <th scope="col" width="10%">Prefered Quantity <br></th>
+                    <th scope="col" width="30%">Expriy Date <br></th>
+                    <th scope="col"> <br></th>
+                    <th scope="col"> <br></th>
+                </thead>
 
-                    <tr>
-                        <td>
-                            <%= preference.title %>
-                        </td>
-                        <td>
-                            <%= preference.prePrice %>
-                        </td>
-                        <td>
-                            <%= preference.preQuantity %>
-                        </td>
-                        <td>
-                            <%= preference.expiryDate %>
-                        </td>
-                        <td>
-                            <span class="icon is-small">
-                                <button class=" js-modal-trigger button is-small is-link is-rounded"
-                                    data-target="modal-js-example" onClick="reply_click('<%= count %>')">Edit
-                                </button>
-                            </span>
-                        </td>
-                        <td>
-                            <span class="icon is-small">
-                                <a><button class="fas fa-trash-alt" type="button"
-                                        onclick="deletePreference('<%= preference.id %>')"></button></a>
-                            </span>
-                        </td>
-                    </tr>
-                    <% count++; %>
-                        <% }); %>
-            </tbody>
-        </table>
-    </section>
 
-    <div id="modal-js-example" class="modal">
-        <div class="modal-background"></div>
+                <tbody id="myTable">
 
-        <div class="modal-content">
-            <div class="box">
-                <form action="/user/preference" method="POST">
-                    <p style="font-size:30px"><b>
-                            Amendment
-                        </b></p>
-                    <div class="field">
-                        <input class="input" type="hidden" id="" value="" required>
-                        <label class="label">Prefered Price:</label>
-                        <div class="control">
-                            <input class="input" type="number" name="prePrice"
-                                value="<%= preferences.preferences[count-1].prePrice %>" required>
+                    <% preferences.preferences.forEach( function(preference) { %>
+
+                        <tr>
+                            <td>
+                                <%= preference.title %>
+                            </td>
+                            <td>
+                                <%= preference.prePrice %>
+                            </td>
+                            <td>
+                                <%= preference.preQuantity %>
+                            </td>
+                            <td>
+                                <%= preference.expiryDate %>
+                            </td>
+                            <td>
+                                <span class="icon is-small">
+                                    <button class=" js-modal-trigger button is-small is-link is-rounded"
+                                        data-target="modal-js-example" onClick="reply_click('<%= count %>')">Edit
+                                    </button>
+                                </span>
+                            </td>
+                            <td>
+                                <span class="icon is-small">
+                                    <a><button class="fas fa-trash-alt" type="button"
+                                            onclick="deletePreference('<%= preference.id %>')"></button></a>
+                                </span>
+                            </td>
+                        </tr>
+                        <% count++; %>
+                            <% }); %>
+                </tbody>
+            </table>
+        </section>
+
+        <div id="modal-js-example" class="modal">
+            <div class="modal-background"></div>
+
+            <div class="modal-content">
+                <div class="box">
+                    <form action="/user/preference" method="POST">
+                        <p style="font-size:30px"><b>
+                                Amendment
+                            </b></p>
+                        <div class="field">
+                            <input class="input" type="hidden" id="" value="" required>
+                            <label class="label">Prefered Price:</label>
+                            <div class="control">
+                                <input class="input" type="number" name="prePrice"
+                                    value="<%= preferences.preferences[count-1].prePrice %>" required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Prefered Quantity:</label>
-                        <div class="control">
-                            <input class="input" type="number" name="preQuantity"
-                                value="<%= preferences.preferences[count-1].preQuantity %>" required>
+                        <div class="field">
+                            <label class="label">Prefered Quantity:</label>
+                            <div class="control">
+                                <input class="input" type="number" name="preQuantity"
+                                    value="<%= preferences.preferences[count-1].preQuantity %>" required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="field">
-                        <label class="label">Expiry Date:</label>
-                        <div class="control">
-                            <input class="input" type="date" name="expiryDate"
-                                value="<%= preferences.preferences[count-1].expiryDate %>" required>
+                        <div class="field">
+                            <label class="label">Expiry Date:</label>
+                            <div class="control">
+                                <input class="input" type="date" name="expiryDate"
+                                    value="<%= preferences.preferences[count-1].expiryDate %>" required>
+                            </div>
                         </div>
-                    </div>
-                    <div class="field">
-                        <div class="control">
-                            <input class="input" type="hidden" name="id"
-                                value="<%= preferences.preferences[count-1].id %>" required>
-                            <input class="input" type="hidden" name="own"
-                                value="<%= preferences.preferences[count-1].own %>" required>
-                            <input class="input" type="hidden" name="title"
-                                value="<%= preferences.preferences[count-1].title %>" required>
-                            <input class="input" type="hidden" name="define" value="<%= req.session.userid %>" required>
-                            <button class="button is-link" type="submit">Edit</button>
+                        <div class="field">
+                            <div class="control">
+                                <input class="input" type="hidden" name="id"
+                                    value="<%= preferences.preferences[count-1].id %>" required>
+                                <input class="input" type="hidden" name="own"
+                                    value="<%= preferences.preferences[count-1].own %>" required>
+                                <input class="input" type="hidden" name="title"
+                                    value="<%= preferences.preferences[count-1].title %>" required>
+                                <input class="input" type="hidden" name="define" value="<%= req.session.userid %>"
+                                    required>
+                                <button class="button is-link" type="submit">Edit</button>
+                            </div>
                         </div>
-                    </div>
-                </form>
+                    </form>
+                </div>
             </div>
-        </div>
 
-        <button class="modal-close is-large" aria-label="close"></button>
+            <button class="modal-close is-large" aria-label="close"></button>
+        </div>
+        <% } else { %>
+            <div class="fields">
+                <h3 style="font-size:4vw">
+                    You haven't define any preference yet.
+                    </h1>
+            </div>
+            <br>
+            <div class="field">
+                <p class="control">
+                    <a class="button is-info" href="/priceTracker/homepage">
+                        <span class="icon is-small">
+                            <i class="fas fa-home"></i>
+                        </span>
+                        <span>Back</span>
+                    </a>
+                </p>
+            </div>
+            <% } %>
+
+
     </div>
 
+    <script>
+        async function deletePreference(id) {
+            var r = confirm("Confirm Delete?", id);
 
-</div>
+            if (r) {
+                var response = await fetch("/user/preference/remove/" + id, {
+                    method: "POST",
+                });
 
-<script>
-    async function deletePreference(id) {
-        var r = confirm("Confirm Delete?", id);
+                if (response.ok) {
+                    alert("Preference has been deleted.");
+                    location.assign("/user/preference");
+                } else {
+                    alert(response.status + ": " + response.statusText);
+                }
 
-        if (r) {
-            var response = await fetch("/user/preference/remove/" + id, {
-                method: "POST",
-            });
-
-            if (response.ok) {
-                alert("Preference has been deleted.");
-                location.assign("/user/preference");
             } else {
-                alert(response.status + ": " + response.statusText);
+            }
+        };
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Functions to open and close a modal
+            function openModal($el) {
+                $el.classList.add('is-active');
             }
 
-        } else {
-        }
-    };
-</script>
-
-<script>
-    document.addEventListener('DOMContentLoaded', () => {
-        // Functions to open and close a modal
-        function openModal($el) {
-            $el.classList.add('is-active');
-        }
-
-        function closeModal($el) {
-            $el.classList.remove('is-active');
-        }
-
-        function closeAllModals() {
-            (document.querySelectorAll('.modal') || []).forEach(($modal) => {
-                closeModal($modal);
-            });
-        }
-
-        // Add a click event on buttons to open a specific modal
-        (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
-            const modal = $trigger.dataset.target;
-            const $target = document.getElementById(modal);
-            console.log($target);
-
-            $trigger.addEventListener('click', () => {
-                openModal($target);
-            });
-        });
-
-        // Add a click event on various child elements to close the parent modal
-        (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
-            const $target = $close.closest('.modal');
-
-            $close.addEventListener('click', () => {
-                closeModal($target);
-            });
-        });
-
-        // Add a keyboard event to close all modals
-        document.addEventListener('keydown', (event) => {
-            const e = event || window.event;
-
-            if (e.keyCode === 27) { // Escape key
-                closeAllModals();
+            function closeModal($el) {
+                $el.classList.remove('is-active');
             }
-        });
-    });
-</script>
 
-<script type="text/javascript">
-    function reply_click(clicked_id) {
-        alert(clicked_id);
-    }
-</script>
+            function closeAllModals() {
+                (document.querySelectorAll('.modal') || []).forEach(($modal) => {
+                    closeModal($modal);
+                });
+            }
+
+            // Add a click event on buttons to open a specific modal
+            (document.querySelectorAll('.js-modal-trigger') || []).forEach(($trigger) => {
+                const modal = $trigger.dataset.target;
+                const $target = document.getElementById(modal);
+                console.log($target);
+
+                $trigger.addEventListener('click', () => {
+                    openModal($target);
+                });
+            });
+
+            // Add a click event on various child elements to close the parent modal
+            (document.querySelectorAll('.modal-background, .modal-close, .modal-card-head .delete, .modal-card-foot .button') || []).forEach(($close) => {
+                const $target = $close.closest('.modal');
+
+                $close.addEventListener('click', () => {
+                    closeModal($target);
+                });
+            });
+
+            // Add a keyboard event to close all modals
+            document.addEventListener('keydown', (event) => {
+                const e = event || window.event;
+
+                if (e.keyCode === 27) { // Escape key
+                    closeAllModals();
+                }
+            });
+        });
+    </script>
+
+    <script type="text/javascript">
+        // function reply_click(clicked_id) {
+        //     alert(clicked_id);
+        // }
+    </script>

@@ -115,7 +115,8 @@ module.exports = {
         } else {
             await User.updateOne(req.params.id).set({
                 cardType: req.body.cardType,
-                cardNum: req.body.cardNum
+                cardNum: req.body.cardNum,
+                agreement: req.body.agreement
             })
 
             // console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
@@ -123,12 +124,13 @@ module.exports = {
             // console.log('req.body.cardNum: ' + req.body.cardNum)
 
             req.session.cardType = req.body.cardType;
-
             req.session.cardNum = req.body.cardNum;
+            req.session.agreement = req.body.agreement;
 
             // console.log('~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~')
             console.log('req.session.cardType: ' + req.session.cardType)
             console.log('req.session.cardNum: ' + req.session.cardNum)
+            console.log('req.session.agreement: ' + req.session.agreement)
 
             return res.redirect('/user/wallet/' + req.session.userid);
         }
@@ -136,7 +138,7 @@ module.exports = {
 
     update_wallet: async function (req, res) {
 
-        var updatedMWallet = await User.updateOne(req.params.id).set({ cardType: req.body.cardType, cardNum: req.body.cardNum, value: 0 });
+        var updatedMWallet = await User.updateOne(req.params.id).set({ cardType: req.body.cardType, cardNum: req.body.cardNum, agreement: req.body.agreement });
 
         if (!updatedMWallet) return res.notFound();
 
@@ -144,7 +146,7 @@ module.exports = {
 
         req.session.cardNum = req.body.cardNum;
 
-        req.session.value = 0;
+        req.session.agreement = req.body.agreement;
 
         return res.redirect('/user/wallet/' + req.params.id);
 
@@ -328,6 +330,8 @@ module.exports = {
     payment: async function (req, res) {
         var record = await User.findOne(req.session.userid).populate("records");
 
+        var count = 0;
+
         // console.log("~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
         // console.log(record)
 
@@ -380,6 +384,18 @@ module.exports = {
                     } else {
                         await User.removeFromCollection(req.session.userid, "products").members(product.products[0].id);
                     }
+
+                    sails.hooks['email-without-ejs'].send({
+                        to: "18225756@life.hkbu.edu.hk",
+                        subject: "PriceTracker: Product's prefered price is arrived!",
+                        html: await sails.renderView('user/testEmail', {
+                            recipientName: req.session.name,
+                            payment: payment,
+                            count: count,
+                            senderName: "PriceTracker",
+                            layout: false
+                        })
+                    }, function (err) { console.log(err || "It worked!") })
                     return res.ok()
                 }
             } else {
@@ -392,6 +408,24 @@ module.exports = {
                 } else {
                     await User.removeFromCollection(req.session.userid, "products").members(product.products[0].id);
                 }
+
+                console.log("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+                console.log(payment.payments)
+                console.log("???????????????????????????????????????????????????")
+                console.log(payment)
+
+
+                sails.hooks['email-without-ejs'].send({
+                    to: "18225756@life.hkbu.edu.hk",
+                    subject: "PriceTracker: Product's prefered price is arrived!",
+                    html: await sails.renderView('user/testEmail', {
+                        recipientName: req.session.name,
+                        payment: payment,
+                        count: count,
+                        senderName: "PriceTracker",
+                        layout: false
+                    })
+                }, function (err) { console.log(err || "It worked!") })
                 return res.ok()
             }
         }
