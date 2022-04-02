@@ -10,7 +10,8 @@
                         <article class="media">
                             <div class="media-left">
                                 <figure class="image is-64x64">
-                                    <a href="http://localhost:1337/priceTracker/category/drinks/<%= product.id %>">
+                                    <a
+                                        href="http://localhost:1337/priceTracker/category/drinks/carbonated-drinks/<%= product.id %>">
                                         <img src="<%= product.imgUrl %>" alt="">
                                     </a>
                                 </figure>
@@ -18,7 +19,8 @@
                             <div class="media-content">
                                 <div class="content">
                                     <h3 class="title">
-                                        <a href="http://localhost:1337/priceTracker/category/drinks">
+                                        <a
+                                            href="http://localhost:1337/priceTracker/category/drinks/carbonated-drinks/<%= product.id %>">
                                             <input class="input" type="hidden" name="title"
                                                 value="<%= product.title %>">
                                             <%= product.title %>

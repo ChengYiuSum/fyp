@@ -95,17 +95,28 @@
       <p class="w3-bar-item w3-mobile">
         Hi, <%= req.session.name %>
       </p>
-      <a href="http://localhost:1337/priceTracker/homepage" class="w3-bar-item w3-button w3-mobile">Home</a>
-      <a href="http://localhost:1337/user/preference" class="w3-bar-item w3-button w3-mobile">Preference</a>
-      <a class="w3-bar-item w3-button w3-mobile" onclick="logout('<%= req.session.userid %>')">Logout</a>
-      <a href="http://localhost:1337/user/account/<%= req.session.userid %>"
-        class="w3-bar-item w3-button w3-right w3-mobile"><i class="fa fa-user" style="font-size:36px"></i></a>
-      <a href="http://localhost:1337/user/wallet/<%= req.session.userid %>"
-        class="w3-bar-item w3-button w3-right w3-mobile"><i class="fa fa-wallet" style="font-size:36px"></i></a>
-      <a href="http://localhost:1337/user/purchase" class="w3-bar-item w3-button w3-right w3-mobile"><i
-          class="fa fa-shopping-cart" style="font-size:36px"></i></a>
-      <a href="http://localhost:1337/admin/setting" class="w3-bar-item w3-button w3-right w3-mobile"><i
-          class="fa fa-cog" style="font-size:36px"></i></a>
+      <% if (req.session.role=="user" ) { %>
+
+        <a href="http://localhost:1337/priceTracker/homepage" class="w3-bar-item w3-button w3-mobile">Home</a>
+        <a href="http://localhost:1337/user/preference" class="w3-bar-item w3-button w3-mobile">Preference</a>
+        <a class="w3-bar-item w3-button w3-mobile" onclick="logout('<%= req.session.userid %>')">Logout</a>
+        <a href="http://localhost:1337/user/account/<%= req.session.userid %>"
+          class="w3-bar-item w3-button w3-right w3-mobile"><i class="fa fa-user" style="font-size:36px"></i></a>
+        <a href="http://localhost:1337/user/wallet/<%= req.session.userid %>"
+          class="w3-bar-item w3-button w3-right w3-mobile"><i class="fa fa-wallet" style="font-size:36px"></i></a>
+        <a href="http://localhost:1337/user/purchase" class="w3-bar-item w3-button w3-right w3-mobile"><i
+            class="fa fa-shopping-cart" style="font-size:36px"></i></a>
+        <% } else if (req.session.role=="admin" ) { %>
+          <a href="http://localhost:1337/priceTracker/homepage" class="w3-bar-item w3-button w3-mobile">Home</a>
+          <a class="w3-bar-item w3-button w3-mobile" onclick="logout('<%= req.session.userid %>')">Logout</a>
+          <a href="http://localhost:1337/user/account/<%= req.session.userid %>"
+            class="w3-bar-item w3-button w3-right w3-mobile"><i class="fa fa-user" style="font-size:36px"></i></a>
+          <a href="http://localhost:1337/admin/value" class="w3-bar-item w3-button w3-right w3-mobile"><i
+              class="fa fa-wallet" style="font-size:36px"></i></a>
+          <a href="http://localhost:1337/admin/setting" class="w3-bar-item w3-button w3-right w3-mobile"><i
+              class="fa fa-cog" style="font-size:36px"></i></a>
+          <% } %>
+
     </div>
     <!-- </div> -->
 

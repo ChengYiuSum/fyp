@@ -90,10 +90,10 @@ module.exports.bootstrap = async function () {
     var hash = await sails.bcrypt.hash('123456', salt);
 
     await User.createEach([
-      { name: "Martin Choy", username: "admin", password: '123456', confirmedPassword: '123456', address: "RRS719", email: "mtchoy@comp.hkbu.edu.hk", cardType: "Visa", cardNum: "1234-2345-3456-4567" },
-      { name: "Fion Lee", username: "boss", password: '123456', confirmedPassword: '123456', address: "RRS725", email: "fionlee@comp.hkbu.edu.hk", cardType: "Mastercard", cardNum: "2345-3456-4567-5678" },
-      { name: "Kenny Cheng", username: "tutor", password: '123456', confirmedPassword: '123456', address: "RRS637", email: "kennycheng@comp.hkbu.edu.hk", cardType: "Visa", cardNum: "3456-4567-5678-6789" },
-      { name: "Byron Choi", username: "observer", password: '123456', confirmedPassword: '123456', address: "DLB628", email: "choi@comp.hkbu.edu.hk", cardType: "Mastercard", cardNum: "4567-5678-6789-7890" },
+      { name: "Martin Choy", username: "admin", password: '123456', confirmedPassword: '123456', address: "RRS719", email: "mtchoy@comp.hkbu.edu.hk", cardType: "Visa", cardNum: "1234-2345-3456-4567", role: "admin" },
+      { name: "Fion Lee", username: "boss", password: '123456', confirmedPassword: '123456', address: "RRS725", email: "fionlee@comp.hkbu.edu.hk", cardType: "Mastercard", cardNum: "2345-3456-4567-5678", role: "user" },
+      { name: "Kenny Cheng", username: "tutor", password: '123456', confirmedPassword: '123456', address: "RRS637", email: "kennycheng@comp.hkbu.edu.hk", cardType: "Visa", cardNum: "3456-4567-5678-6789", role: "user" },
+      { name: "Byron Choi", username: "observer", password: '123456', confirmedPassword: '123456', address: "DLB628", email: "choi@comp.hkbu.edu.hk", cardType: "Mastercard", cardNum: "4567-5678-6789-7890", role: "user" },
       // etc.
     ]);
   }

@@ -22,6 +22,13 @@ module.exports.policies = {
   PriceTrackerController: {
     // forbid different roles to use some functions in the controller 
     // homepage: 'isAdmin'
+  },
+
+  AdminController: {
+    valuePreview: 'isAdmin',
+    approve: 'isAdmin',
+    setting: 'isAdmin',
+    preference: 'isAdmin'
   }
 
 };

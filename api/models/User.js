@@ -41,8 +41,8 @@ module.exports = {
 
     role: {
       type: 'string',
-      isIn: ['admin', 'tester', 'visitor'],
-      defaultsTo: 'visitor'
+      isIn: ['admin', 'user', 'visitor'],
+      defaultsTo: 'user'
     },
 
     cardType: {
