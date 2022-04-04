@@ -54,6 +54,7 @@ module.exports.routes = {
   'GET /user/json': 'UserController.json',
 
   'GET /user/account/:id': 'UserController.account',
+  'POST /user/account/:id': 'UserController.account',
   'GET /user/wallet/:id': 'UserController.wallet',
   'POST /user/wallet/:id': 'UserController.wallet',
   'GET /user/wallet/:id/value': 'UserController.value',
@@ -81,7 +82,7 @@ module.exports.routes = {
   'GET /admin/value/json': 'AdminController.populate_value_record',
   'GET /admin/value': 'AdminController.valuePreview',
   'POST /admin/approve/:id': 'AdminController.approve',
-  'GET /admin/preference/json': 'AdminController.preference',
+  'GET /admin/preference/json': 'AdminController.populate_preference',
   'GET /admin/preference/matching': 'AdminController.matching',
   'GET /admin/setting': 'AdminController.setting',
   'POST /admin/setting': 'AdminController.setting',
@@ -96,10 +97,6 @@ module.exports.routes = {
   'GET /product/chart/:id': 'ProductController.chart',
   'GET /product/scrape': 'ProductController.scrape',
   'GET /product/:id/chart/json': 'ProductController.populate_chart',
-
-
-  // 'GET /user/test': 'UserController.test',
-  'GET /loaderio-de4c69f9f00e62494ea5278001babfec/': 'AdminController.loadTest'
 
 };
 

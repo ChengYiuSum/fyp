@@ -375,11 +375,13 @@ module.exports = {
                 var message = "The price is below your prefered price now. You can click the \"add to cart \" button to purchase it!"
 
                 sails.hooks['email-without-ejs'].send({
-                    to: "sammy3963@gmail.com",
-                    subject: "Testing",
+                    to: "18225756@life.hkbu.edu.hk",
+                    subject: "The price is below your prefered price now. You can purchase it!",
                     html: await sails.renderView('priceTracker/testEmail', {
-                        recipientNo: req.body.applyno,
-                        changesform: req.body,
+                        recipientName: req.session.name,
+                        preference: preference,
+                        preferencedProduct: preferencedProduct,
+                        senderName: "PriceTracker",
                         layout: false
                     })
                 }, function (err) { console.log(err || "It worked!") })

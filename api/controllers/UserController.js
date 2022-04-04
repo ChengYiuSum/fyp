@@ -101,6 +101,17 @@ module.exports = {
 
             return res.view('user/account', { user: thatUser });
         }
+
+
+
+        await User.updateOne(req.params.id).set({ agreement: req.body.agreement })
+
+        req.session.agreement = req.body.agreement
+
+        var thatUser = await User.findOne(req.params.id);
+
+        return res.view('user/account', { user: thatUser });
+
     },
 
     wallet: async function (req, res) {
@@ -417,7 +428,7 @@ module.exports = {
 
                 sails.hooks['email-without-ejs'].send({
                     to: "18225756@life.hkbu.edu.hk",
-                    subject: "PriceTracker: Product's prefered price is arrived!",
+                    subject: "PriceTracker: Your purchasing record is here",
                     html: await sails.renderView('user/testEmail', {
                         recipientName: req.session.name,
                         payment: payment,
@@ -493,6 +504,25 @@ module.exports = {
         if (!userPreferences) return res.notFound();
 
         return res.view('user/preference', { preferences: userPreferences, numOfRecords: count, allPreferences: allPreferences, count: num });
+
+    },
+
+    editAccount: async function (req, res) {
+
+        var thatUser = await User.findOne(req.session.userid);
+
+        if (req.method == "GET") {
+            return res.view('user/editAccount', { user: thatUser });
+        }
+
+        var updatedAccount = await User.updateOne(req.session.userid).set({
+            prePrice: req.body.prePrice,
+            preQuantity: req.body.preQuantity,
+            expiryDate: req.body.expiryDate
+        })
+
+        return res.view('user/account', { user: thatUser });
+
 
     },
 

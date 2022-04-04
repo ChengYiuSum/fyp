@@ -51,7 +51,7 @@ module.exports = {
 
                             // newPriceArray.push(price)
 
-                            var product = await Product.create({ "price": price, "date": "2022-3-26", "have": thatProduct.id }).fetch();
+                            var product = await Product.create({ "price": price, "date": "2022-4-6", "have": thatProduct.id }).fetch();
 
 
                             // var newProduct = await Product.updateOne(thatProduct.id).set({ price: newPriceArray })
@@ -60,7 +60,7 @@ module.exports = {
                             console.log(product)
 
                             if (!thatProduct) {
-                                var product = await PriceTracker.create({ "title": title, "price": price, "imgUrl": imgUrl, "shop": "ztore", "type": "carbonated-drinks", "date": "2022-3-26" }).fetch();
+                                var product = await PriceTracker.create({ "title": title, "price": price, "imgUrl": imgUrl, "shop": "ztore", "type": "carbonated-drinks", "date": "2022-3-31" }).fetch();
                             } else if (thatProduct) {
                                 //Update
                             }
@@ -80,8 +80,11 @@ module.exports = {
 
                             var thatProduct = await PriceTracker.findOne({ title: title });
 
+                            var product = await Product.create({ "price": price, "date": "2022-4-6", "have": thatProduct.id }).fetch();
+
+
                             if (!thatProduct) {
-                                var product = await PriceTracker.create({ "title": title, "price": price, "imgUrl": imgUrl, "shop": "citySuper", "type": "carbonated-drinks", "date": "2022-3-25" }).fetch();
+                                var product = await PriceTracker.create({ "title": title, "price": price, "imgUrl": imgUrl, "shop": "citySuper", "type": "carbonated-drinks", "date": "2022-3-31" }).fetch();
                             } else if (thatProduct) {
                                 //Update
                             }
@@ -104,7 +107,7 @@ module.exports = {
                 }
             }
             scrapeProduct('https://www.ztore.com/tc/category/all/beverage/carbonated-beverage', 1)
-            // scrapeProduct('https://online.citysuper.com.hk/collections/carbonated-drink', 2)
+            scrapeProduct('https://online.citysuper.com.hk/collections/carbonated-drink', 2)
 
         }
         return res.view('priceTracker/scrape', {});

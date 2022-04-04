@@ -1,23 +1,44 @@
-<div class="columns">
-    <div class="column">
-        <div class="field">
-            <h3 style="font-size:4vw"><b>Personal Information</b></h3>
-            <div>
-                <b>Name:</b>
-                <%= user.name %>
-            </div>
-            <div>
-                <b>Address:</b>
-                <%= user.address %>
-            </div>
-            <div>
-                <b>E-mail: </b>
-                <%= user.email %>@gmail.com
-            </div>
-            <div>
-                <b>Value: </b>
-                <%= user.value %>
+<form action="/user/account/<%= user.id %>" method="POST">
+
+    <body>
+        <div class="columns">
+            <div class="column">
+                <div class="field">
+                    <h3 style="font-size:4vw"><b>Personal Information</b></h3>
+                    <div>
+                        <b>Name:</b>
+                        <%= user.name %>
+                    </div>
+                    <div>
+                        <b>Address:</b>
+                        <%= user.address %>
+                    </div>
+                    <div>
+                        <b>E-mail: </b>
+                        <%= user.email %>@gmail.com
+                    </div>
+                    <div>
+                        <b>Value: </b>
+                        <%= user.value %>
+                    </div>
+                    <div>
+                        <b>Auto-buy: </b>
+                        <%= user.agreement %>
+                    </div>
+                    <% if (user.agreement=="on" ) { %>
+                        <div>
+                            <input class="input" type="hidden" name="agreement" value="off" required>
+                            <button class="button is-link" type="submit">Turn off Auto-buy</button>
+                        </div>
+                        <% } else { %>
+                            <div>
+                                <input class="input" type="hidden" name="agreement" value="on" required>
+                                <button class="button is-link" type="submit">Turn on Auto-buy</button>
+                            </div>
+                            <% } %>
+
+                </div>
             </div>
         </div>
-    </div>
-</div>
+    </body>
+</form>

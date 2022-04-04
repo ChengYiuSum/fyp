@@ -113,16 +113,16 @@ module.exports = {
 
     },
 
-    preference: async function (res, req) {
-        if (req.method == "GET") {
+    populate_preference: async function (req, res) {
 
-            var allPreferences = await Preference.find().populate("define");
+        var allPreferences = await Preference.find().populate("define");
 
-            return res.json(allPreferences);
-        }
+        return res.json(allPreferences);
     },
 
     matching: async function (req, res) {
+        var count = 0;
+
         if (req.method == "GET") {
             console.log("AutoMatching~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
 
@@ -132,18 +132,60 @@ module.exports = {
                 console.log("AutoMatching~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~")
                 var preferencedProduct = await PriceTracker.findOne(allPreferences[i].own)
                 if (parseInt(preferencedProduct.price.substring(1)) <= allPreferences[i].prePrice) {
+                    var user = await User.findOne(allPreferences[i].define.id)
                     console.log("matched sucess")
-                    var message = "The price is below your prefered price now. You can click the \"add to cart \" button to purchase it!"
+                    if (allPreferences[i].define.agreement == "off") {
+                        var message = "The price is below your prefered price now. You can click the \"add to cart \" button to purchase it!"
 
-                    sails.hooks['email-without-ejs'].send({
-                        to: "sammy3963@gmail.com",
-                        subject: "Testing",
-                        html: await sails.renderView('priceTracker/testEmail', {
-                            recipientNo: req.body.applyno,
-                            changesform: req.body,
-                            layout: false
-                        })
-                    }, function (err) { console.log(err || "It worked!") })
+                        sails.hooks['email-without-ejs'].send({
+                            to: "sammy3963@gmail.com",
+                            subject: "Testing",
+                            html: await sails.renderView('priceTracker/testEmail', {
+                                recipientNo: req.body.applyno,
+                                changesform: req.body,
+                                layout: false
+                            })
+                        }, function (err) { console.log(err || "It worked!") })
+                    } else {
+                        if (allPreferences[i].define.value > parseInt(preferencedProduct.price.substring(1)) * allPreferences[i].preQuantity) {
+                            console.log("Auto-buying")
+                            var total = parseInt(preferencedProduct.price.substring(1)) * allPreferences[i].preQuantity
+
+                            var payment = await Payment.create({
+                                title: allPreferences[i].title,
+                                price: preferencedProduct.price,
+                                quantity: allPreferences[i].preQuantity,
+                                total: total
+                            }).fetch();
+
+                            await Preference.destroyOne(allPreferences[i].id);
+
+                            sails.hooks['email-without-ejs'].send({
+                                to: "18225756@life.hkbu.edu.hk",
+                                subject: "PriceTracker: Your purchasing record is here",
+                                html: await sails.renderView('user/testEmail', {
+                                    recipientName: allPreferences[i].define.name,
+                                    payment: payment,
+                                    count: count,
+                                    senderName: "PriceTracker",
+                                    layout: false
+                                })
+                            }, function (err) { console.log(err || "It worked!") })
+
+                        } else {
+                            sails.hooks['email-without-ejs'].send({
+                                to: "18225756@life.hkbu.edu.hk",
+                                subject: "PriceTracker: Product's prefered price is arrived!",
+                                html: await sails.renderView('priceTracker/testEmail', {
+                                    recipientName: allPreferences[i].define.name,
+                                    preference: allPreferences[i],
+                                    preferencedProduct: preferencedProduct,
+                                    senderName: "PriceTracker",
+                                    layout: false
+                                })
+                            }, function (err) { console.log(err || "It worked!") })
+                        }
+                    }
                 } else {
                     console.log("matched unsuccess")
 
@@ -155,10 +197,23 @@ module.exports = {
 
                     var date = y + "-" + m + "-" + d
 
-                    if (allPreferences[i].expiryDate < date) {
+                    // console.log(date)
+                    // console.log(typeof (date))
+                    // console.log(allPreferences[i].expiryDate)
+                    // console.log(typeof (allPreferences[i].expiryDate))
+
+                    // if (Date.parse("2022-04-30") < Date.parse("2022-4-4")) {
+                    //     console.log("expired")
+                    // } else {
+                    //     console.log("Not yet expired")
+                    // }
+
+                    if (Date.parse(allPreferences[i].expiryDate) < Date.parse(date)) {
                         console.log("Expired")
 
                         await Preference.destroyOne(allPreferences[i].id);
+                    } else {
+                        console.log("Not yet expired")
                     }
                 }
             }
